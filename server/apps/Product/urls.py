@@ -1,6 +1,8 @@
 from django.urls import path
-from rest_framework.response import Response
+
+from . import views
 
 urlpatterns = [
-
+    path('', views.ProductAPIView.as_view()),
+    path('<int:pk>/', views.ProductDetailAPIView.as_view()),
 ]

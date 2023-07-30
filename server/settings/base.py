@@ -1,6 +1,7 @@
 from .installed_apps import *
 from .development import *
 from .databases import *
+from .email import *
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

@@ -5,9 +5,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # for products urls
-    path('products/', include('server.apps.Product.urls')),
+    path('api/v1/products/', include('server.apps.Product.urls')),
 
     # for users
-    path('user/', include('server.apps.User.urls')),
+    path('api/v1/users/', include('server.apps.User.urls')),
 
 ]
