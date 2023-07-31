@@ -2,6 +2,11 @@ from rest_framework import serializers, validators
 from django.contrib.auth.models import User
 import re
 
+from . import models
+
+
+'''Registration and authorization'''
+
 
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=4, required=True)
@@ -48,3 +53,20 @@ class RegisterSerializer(serializers.Serializer):
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(min_length=4, required=True)
     password = serializers.CharField(min_length=8, required=True)
+
+
+'''Favorite product'''
+
+
+class ProductTitleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Product
+        fields = ['title']
+
+
+class FavoriteProductSerializer(serializers.ModelSerializer):
+    # product = ProductTitleSerializer()
+
+    class Meta:
+        model = models.FavoriteProduct
+        fields = ['id', 'user', 'product']

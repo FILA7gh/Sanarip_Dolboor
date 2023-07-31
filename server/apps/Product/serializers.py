@@ -3,6 +3,14 @@ from rest_framework import serializers
 from . import models
 
 
+class CountryOfOriginSerializer(serializers.ModelSerializer):
+    country = serializers.CharField(max_length=100)
+
+    class Meta:
+        model = models.CountryOfOrigin
+        fields = '__all__'
+
+
 class SizeSerilizer(serializers.ModelSerializer):
     size = serializers.CharField(max_length=50)
 
@@ -36,6 +44,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
+    country_of_origin = CountryOfOriginSerializer()
     size = SizeSerilizer(many=True)
     color = ColorSerializer(many=True)
     season = SeasonSerializer(many=True)
