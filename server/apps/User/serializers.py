@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import re
 
 from . import models
+from server.apps.Product.serializers import ProductSerializer
 
 
 '''Registration and authorization'''
@@ -58,15 +59,17 @@ class LoginSerializer(serializers.Serializer):
 '''Favorite product'''
 
 
-class ProductTitleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Product
-        fields = ['title']
-
-
-class FavoriteProductSerializer(serializers.ModelSerializer):
-    # product = ProductTitleSerializer()
+class FavoriteProductAddSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=models.Product.objects.all())
 
     class Meta:
         model = models.FavoriteProduct
-        fields = ['id', 'user', 'product']
+        fields = ['id', 'product']
+
+
+class FavoriteProductListSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
+    class Meta:
+        model = models.FavoriteProduct
+        fields = ['id', 'product']

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from server.settings.swagger import urlpatterns as urlp
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -11,3 +14,5 @@ urlpatterns = [
     path('api/v1/users/', include('server.apps.User.urls')),
 
 ]
+
+urlpatterns += urlp

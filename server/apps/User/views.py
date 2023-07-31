@@ -2,8 +2,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from django.contrib.auth import authenticate, logout
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from . import serializers, models, utils, permissions
+from server.core import paginations
 
 
 '''Registration and authorization'''
@@ -16,19 +18,27 @@ class UserRegisterAPIView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        user.save()
 
         utils.send_email(subject=f'Параметры учётной записи для {user.username} ',
-                   body=f'Здравствуйте {user.first_name} {user.last_name}\n'
-                        f'Спасибо за регистрацию на Наш интернет магазин!.\n',
-                   to_email=[user.email])
+                         body=f'Здравствуйте {user.first_name} {user.last_name}\n'
+                         f'Спасибо за регистрацию на Наш интернет магазин!.\n',
+                         to_email=[user.email])
 
         if utils.send_email:
-            return Response(data='Сообщение\n'
-                                 'Спасибо за регистрацию. Теперь вы можете войти на сайт, '
-                                 'используя логин и пароль, указанные при регистрации.',
+
+            # Создаем токен для пользователя
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            user.save()
+
+            return Response(data={'message': 'Сообщение\n'
+                                  'Спасибо за регистрацию. Теперь вы можете войти на сайт, '
+                                  'используя логин и пароль, указанные при регистрации.\n',
+                                  'access_token': access_token,
+                                  'refresh_token': str(refresh)},
                             status=status.HTTP_201_CREATED)
         user.delete()
+
         return Response(data=f'Problem sending email to {user.email}, check if you typed it correctly',
                         status=status.HTTP_400_BAD_REQUEST)
 
@@ -57,8 +67,15 @@ class LogoutAPIView(APIView):
 
 
 class FavoriteProductAPIView(generics.ListCreateAPIView):
-    serializer_class = serializers.FavoriteProductSerializer
     permission_classes = [permissions.IsAuthenticatedAndFavoriteProductOwner]
+    pagination_class = paginations.PaginationForTen
+
+    # условие для методов какой сериалайзер класс использовать
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.FavoriteProductListSerializer
+        elif self.request.method == 'POST':
+            return serializers.FavoriteProductAddSerializer
 
     def get_queryset(self):
         user = self.request.user
