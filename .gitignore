@@ -5,4 +5,4 @@ logs/
 staticfiles/
 media/
 db.sqlite3
-.idea
+.idea/
