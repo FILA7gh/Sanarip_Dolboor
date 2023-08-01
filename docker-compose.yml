@@ -1,12 +1,33 @@
-version: '3'
+version: "3"
 
 services:
   web:
     build: .
     ports:
       - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: bash -c "sleep 10 && python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - media_files:/path/to/products_images
+      - /path/to/your/media_files:/path/to/media/Product_image
+
+
+  db:
+    image: postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+    env_file:
+        - .env
+    environment:
+        - POSTGRES_USER=${DATABASE_USER}
+        - POSTGRES_DB=${DATABASE_NAME}
+        - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
 
 volumes:
+  pg_data:
   media_files:

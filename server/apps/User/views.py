@@ -81,6 +81,7 @@ class FavoriteProductAPIView(generics.ListCreateAPIView):
         user = self.request.user
         return models.FavoriteProduct.objects.filter(user=user)
 
+    # пост запрос добавляет товар в избранное, повторный запрос удаляет.
     def create(self, request, *args, **kwargs):
         product_id = request.data.get('product')
         user = request.user

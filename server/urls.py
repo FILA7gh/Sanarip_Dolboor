@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
 
-from server.settings.swagger import urlpatterns as urlp
+import server.settings.base
+from server.settings.swagger import urlpatterns as swagger
 
 
 urlpatterns = [
@@ -13,6 +15,6 @@ urlpatterns = [
     # for users
     path('api/v1/users/', include('server.apps.User.urls')),
 
-]
+] + static(server.settings.base.MEDIA_URL, document_root=server.settings.base.MEDIA_ROOT)
 
-urlpatterns += urlp
+urlpatterns += swagger

@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.Serializer):
             return username
         return serializers.ValidationError('User already exist!')
 
-    def validate_password_1(self, password):
+    def validate_password(self, password):
         if not re.match("^(?=.*?[a-z])(?=.*?[0-9]).{8,}$", password):
             raise serializers.ValidationError(
                 'Пароль должен содержать как минимум одну букву и одну цифру, и быть длиной не менее 8 символов!')
@@ -43,10 +43,10 @@ class RegisterSerializer(serializers.Serializer):
         username = validated_data.get('username')
         first_name = validated_data.get('first_name')
         last_name = validated_data.get('last_name')
-        password_1 = validated_data.get('password')
+        password = validated_data.get('password')
         email = validated_data.get('email')
         user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
-                                        password=password_1, email=email)
+                                        password=password, email=email)
 
         return user
 

@@ -61,7 +61,7 @@ class Product(models.Model):
                         ('Adult', 'Adult'), ('Elderwear', 'Elderwear')
     ]
 
-    image = models.ImageField()
+    image = models.ImageField(upload_to='Product_image')
     title = models.CharField(max_length=100)
     gender = models.CharField(choices=CHOICE_GENDER, max_length=50)
     category = models.CharField(choices=CHOICE_CATEGORY, max_length=50)  # категория по возрасту
