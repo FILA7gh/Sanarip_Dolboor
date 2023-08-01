@@ -5,9 +5,9 @@
 Создать .env файл с .env.example и заполнить их необходимыми значениями.
 
 Установить зависимости:
-pip install -r requirements.rxt
+pip install -r requirements.txt
 
-Активировать виртуальное окружения:
+Активировать виртуальное окружение:
 source venv.bin.activate
 
 Накатить миграции:

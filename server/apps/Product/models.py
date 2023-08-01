@@ -12,6 +12,10 @@ class Size(models.Model):
     def __str__(self):
         return self.size
 
+    class Meta:
+        verbose_name = 'Size'
+        verbose_name_plural = 'Sizes'
+
 
 class Color(models.Model):
     CHOICE_COLOR = [
@@ -26,6 +30,10 @@ class Color(models.Model):
     def __str__(self):
         return self.color
 
+    class Meta:
+        verbose_name = 'Color'
+        verbose_name_plural = 'Colors'
+
 
 class Season(models.Model):
     CHOICE_SEASON = [
@@ -38,6 +46,10 @@ class Season(models.Model):
 
     def __str__(self):
         return self.season
+
+    class Meta:
+        verbose_name = 'Season'
+        verbose_name_plural = 'Seasons'
 
 
 # город производства
